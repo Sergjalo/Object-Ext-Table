@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ExtensionObject Label="HTML Table" PageHeight="10000">
+<Text Label="Dimension Label:" Initial="" Expression="Country" />
+<Dimension Label="Country:" Initial="" DropTarget="Country" Multiple="true"/>
+<Text Label="Expression Label:" Initial="" Expression="Sales $" />
+<Measurement Label="Sales Expr:" Initial="" Expression="" Multiple="true" />
+<Initiate Name="Caption.Text" Value="QlikView Cookbook HTML Table"/>
+<Initiate Name="Chart.BgColor.ColorHex" value="#FFF"/>
+<Initiate Name="Chart.Dimension.0.Sort.PrimarySort" value="5"/>
+<Text Expression="=GetCurrentSelections('',':',',',100)"/>
+<Text Expression="=vSelectNow"/>
+</ExtensionObject>
