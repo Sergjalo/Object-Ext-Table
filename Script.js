@@ -1,5 +1,14 @@
 /*
  D3 example of simple table
+ some tricky workarounds:
+ - to obtain dimension count - we suppose that dimension has not color
+ - to make possible select values on ALL dimensions that is in clicked row:
+	during click we fill variable vSelectNow with values that of dimensions in that row divided by ";"
+	that causes refreshing object
+	during object loading we watch for that variable (trough _this.Layout.Text2.text defined in definition.xml)
+	if varible consist of some values then we take the last one and apply appropriate selection and truncate variable on that value
+	that causes object refreshing and once again we applay new selection
+	till all dimensions will be processed
 */
 var template_path = Qva.Remote + (Qva.Remote.indexOf('?') >= 0 ? '&' : '?')+ "public=only&name=Extensions/HTMLTable/";
 Qva.LoadScript(template_path + "d3.min.js",extension_Done);

@@ -1,0 +1,274 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<link rel="shortcut icon" type="image/ico" href="http://www.datatables.net/favicon.ico">
+	<meta name="viewport" content="initial-scale=1.0, maximum-scale=2.0">
+	<title>DataTables example - Javascript sourced data</title>
+
+	<link rel="stylesheet" type="text/css" href="css/jquery.dataTables.css">
+	<style type="text/css" class="init">
+	</style>
+	
+	
+	<script type="text/javascript" language="javascript" src="jquery-1.12.4.min.js">
+	</script>
+	<script type="text/javascript" language="javascript" src="jquery.dataTables.min.js">
+	</script>
+	<script type="text/javascript" language="javascript" class="init">
+	
+
+var dataSet = [
+    [ "Tiger Nixon", "System Architect", "Edinburgh", "5421", "2011/04/25", "$320,800" ],
+    [ "Garrett Winters", "Accountant", "Tokyo", "8422", "2011/07/25", "$170,750" ],
+    [ "Ashton Cox", "Junior Technical Author", "San Francisco", "1562", "2009/01/12", "$86,000" ],
+    [ "Cedric Kelly", "Senior Javascript Developer", "Edinburgh", "6224", "2012/03/29", "$433,060" ],
+    [ "Airi Satou", "Accountant", "Tokyo", "5407", "2008/11/28", "$162,700" ],
+    [ "Brielle Williamson", "Integration Specialist", "New York", "4804", "2012/12/02", "$372,000" ],
+    [ "Herrod Chandler", "Sales Assistant", "San Francisco", "9608", "2012/08/06", "$137,500" ],
+    [ "Rhona Davidson", "Integration Specialist", "Tokyo", "6200", "2010/10/14", "$327,900" ],
+    [ "Colleen Hurst", "Javascript Developer", "San Francisco", "2360", "2009/09/15", "$205,500" ],
+    [ "Sonya Frost", "Software Engineer", "Edinburgh", "1667", "2008/12/13", "$103,600" ],
+    [ "Jena Gaines", "Office Manager", "London", "3814", "2008/12/19", "$90,560" ],
+    [ "Quinn Flynn", "Support Lead", "Edinburgh", "9497", "2013/03/03", "$342,000" ],
+    [ "Charde Marshall", "Regional Director", "San Francisco", "6741", "2008/10/16", "$470,600" ],
+    [ "Haley Kennedy", "Senior Marketing Designer", "London", "3597", "2012/12/18", "$313,500" ],
+    [ "Tatyana Fitzpatrick", "Regional Director", "London", "1965", "2010/03/17", "$385,750" ],
+    [ "Michael Silva", "Marketing Designer", "London", "1581", "2012/11/27", "$198,500" ],
+    [ "Paul Byrd", "Chief Financial Officer (CFO)", "New York", "3059", "2010/06/09", "$725,000" ],
+    [ "Gloria Little", "Systems Administrator", "New York", "1721", "2009/04/10", "$237,500" ],
+    [ "Bradley Greer", "Software Engineer", "London", "2558", "2012/10/13", "$132,000" ],
+    [ "Dai Rios", "Personnel Lead", "Edinburgh", "2290", "2012/09/26", "$217,500" ],
+    [ "Jenette Caldwell", "Development Lead", "New York", "1937", "2011/09/03", "$345,000" ],
+    [ "Yuri Berry", "Chief Marketing Officer (CMO)", "New York", "6154", "2009/06/25", "$675,000" ],
+    [ "Caesar Vance", "Pre-Sales Support", "New York", "8330", "2011/12/12", "$106,450" ],
+    [ "Doris Wilder", "Sales Assistant", "Sidney", "3023", "2010/09/20", "$85,600" ],
+    [ "Angelica Ramos", "Chief Executive Officer (CEO)", "London", "5797", "2009/10/09", "$1,200,000" ],
+    [ "Gavin Joyce", "Developer", "Edinburgh", "8822", "2010/12/22", "$92,575" ],
+    [ "Jennifer Chang", "Regional Director", "Singapore", "9239", "2010/11/14", "$357,650" ],
+    [ "Brenden Wagner", "Software Engineer", "San Francisco", "1314", "2011/06/07", "$206,850" ],
+    [ "Fiona Green", "Chief Operating Officer (COO)", "San Francisco", "2947", "2010/03/11", "$850,000" ],
+    [ "Shou Itou", "Regional Marketing", "Tokyo", "8899", "2011/08/14", "$163,000" ],
+    [ "Michelle House", "Integration Specialist", "Sidney", "2769", "2011/06/02", "$95,400" ],
+    [ "Suki Burks", "Developer", "London", "6832", "2009/10/22", "$114,500" ],
+    [ "Prescott Bartlett", "Technical Author", "London", "3606", "2011/05/07", "$145,000" ],
+    [ "Gavin Cortez", "Team Leader", "San Francisco", "2860", "2008/10/26", "$235,500" ],
+    [ "Martena Mccray", "Post-Sales support", "Edinburgh", "8240", "2011/03/09", "$324,050" ],
+    [ "Unity Butler", "Marketing Designer", "San Francisco", "5384", "2009/12/09", "$85,675" ]
+];
+
+$(document).ready(function() {
+	var fixCnt=2;
+	var dispCnt=2;
+	// to do - what if invisible add/del
+	// dt_columnsStepsArrays.html - columns array transfering samples/development
+	
+    var table =$('#example').DataTable( {
+		data: dataSet,
+		//stateSave: true,
+		"autoWidth": true,
+		columns: [
+			{ title: "Name" ,width: "150px"}, //, width: "20%"
+			{ title: "Position",width: "150px" }, // width: "200px"
+			{ title: "Office" },
+			{ title: "Age" },
+			{ title: "Start date" },
+			{ title: "Salary" }
+		],
+		"orderMulti": true,
+		"columnDefs": [
+            { "visible": false, "targets": 2 }
+        ],
+		"drawCallback": function ( settings ) {
+            var api = this.api();
+            var rows = api.rows( {page:'current'} ).nodes();
+            var last=null;
+ 
+            api.column(2, {page:'current'} ).data().each( function ( group, i ) {
+                if ( last !== group ) {
+                    $(rows).eq( i ).before(
+                        '<tr class="group"><td colspan="'+fixCnt+dispCnt+'">'+group+'</td></tr>'
+                    );
+ 
+                    last = group;
+                }
+            } );
+        }		
+    } );
+	
+	 $('a.toggle-vis').on( 'click', function (e) {
+        e.preventDefault();
+ 
+        // Get the column API object
+        var column = table.column( $(this).attr('data-column') );
+ 
+        // Toggle the visibility
+        column.visible( ! column.visible() );
+    } );
+	
+	var arInvis = [];
+	var arColShow = [];
+	var arColShifted = [];
+
+	var colCnt=table.columns().flatten().length;
+	// define what cols already is invisible
+	for (var i=fixCnt; i<colCnt; i++) {
+		if (table.column(i).visible()) 
+			arColShow.push(i);
+		else 
+			arInvis.push(i);
+	}	
+
+	// check for correct visible col count
+	if ((dispCnt+fixCnt+arInvis.length)> colCnt) {
+		dispCnt=colCnt - fixCnt-arInvis.length;
+	} 
+	
+	// 1st shift
+	//transfer from show every col that should be hide
+	for (var i=dispCnt-1, h=arColShow.length; i<h; i++){
+		arTransfer(arColShow,arColShifted,arColShow[dispCnt]);
+	}
+	
+	setVisability();
+	
+	$('a.fvd').on( 'click', function (e) {
+        e.preventDefault();
+		if (!stepF()) console.log('finish');
+    } );
+
+	$('a.back').on( 'click', function (e) {
+        e.preventDefault();
+		if (!stepB()) console.log('start');
+    } );
+
+	// apply visibility from arrays
+	function setVisability() {
+		for (var i=0; i<arColShow.length; i++) {
+			table.column(arColShow[i]).visible(true);
+		}
+
+		for (var i=0; i<arColShifted.length; i++) {
+			table.column(arColShifted[i]).visible(false);
+		}
+	}
+
+	function stepB () {
+		// step back
+		// last visible column num
+		var res = false;
+		var el=arColShow[0];
+		var elt= getNextOrdered(arColShifted,el);
+		// if there are place for step
+		if (elt!=undefined) {
+			el= arColShow.shift();
+			addOrdered (arColShifted, el);
+			res = arTransfer(arColShifted,arColShow,elt);
+		}
+		setVisability();
+		return res;
+	}
+	
+	function stepF () {
+		// step forward 
+		// last visible column num
+		var res = false;
+		var el=arColShow[arColShow.length-1];
+		var elt= getNextOrdered(arColShifted,el);
+		// if there are place for step
+		if (elt!=undefined) {
+			el= arColShow.shift();
+			addOrdered (arColShifted, el);
+			res = arTransfer(arColShifted,arColShow,elt);
+		}
+		setVisability();
+		return res;
+	}
+	
+	function stepB () {
+		// first visible column num
+		var res = false;
+		var el=arColShow[0];
+		var elt= getPrevOrdered(arColShifted,el);
+		// if there are place for step
+		if (elt!=undefined) {
+			el= arColShow.pop();
+			addOrdered (arColShifted, el);
+			res = arTransfer(arColShifted,arColShow,elt);
+		}
+		setVisability();
+		return res;
+	}
+	
+	// funct 
+	// transfer from one to another
+	function arTransfer (arS, arD, el) {
+		if (delOrdered(arS,el)){
+			addOrdered ( arD, el);
+			return true;
+		}
+		else return false;
+	}
+	// arD - sorted by asc
+	function addOrdered ( arD, el) {
+		var l=arD.length;
+		for (var i=0 ; i<arD.length; i++){
+			if (arD[i]>+el) {
+				arD.splice(i,0,+el);
+				break;
+			}
+			if (arD[i]==+el) { return false; }
+		}
+		if (l==arD.length) {
+			arD.push(+el);
+		}
+		return true;
+	}
+	// arD - sorted by asc
+	function delOrdered ( arD, el) {
+		var l=arD.length;
+		for (var i=0 ; i<arD.length; i++){
+			if (arD[i]==+el) {
+				arD.splice(i,1);
+				break;
+			}
+		}
+		if (l==arD.length) {
+			return false;
+		}
+		return true;
+	}
+	function getNextOrdered ( arD, el) {
+		for (var i=0 ; i<arD.length; i++){
+			if (arD[i]>+el) return arD[i];
+		}
+	}
+	
+	function getPrevOrdered ( arD, el) {
+		for (var i=arD.length-1 ; i>=0; i--){
+			if (arD[i]<+el) return arD[i];
+		}
+	}
+	
+} );
+
+	</script>
+</head>
+<body>
+<div>Toggle column: <a class="toggle-vis" data-column="0">Name</a> - 
+<a class="toggle-vis" data-column="1">Position</a> - 
+<a class="toggle-vis" data-column="2">Office</a> - 
+<a class="toggle-vis" data-column="3">Age</a> - 
+<a class="toggle-vis" data-column="4">Start date</a> - 
+<a class="toggle-vis" data-column="5">Salary</a>
+</div>
+<div>Steps: 
+<a class="back" data-column="1">back</a> -
+<a class="fvd"  data-column="0">forward</a> 
+</div>
+ff
+<div style="width: 800px">
+<table id="example" class="display" cellspacing="0">
+</table>
+</div>
+ffff
+</body>

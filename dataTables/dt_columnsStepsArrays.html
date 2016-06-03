@@ -1,0 +1,162 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<link rel="shortcut icon" type="image/ico" href="http://www.datatables.net/favicon.ico">
+	<meta name="viewport" content="initial-scale=1.0, maximum-scale=2.0">
+	<title>DataTables example - Javascript sourced data</title>
+
+	<link rel="stylesheet" type="text/css" href="css/jquery.dataTables.css">
+	<style type="text/css" class="init">
+	</style>
+	
+	
+	<script type="text/javascript" language="javascript" src="jquery-1.12.4.min.js">
+	</script>
+	<script type="text/javascript" language="javascript" src="jquery.dataTables.min.js">
+	</script>
+	<script type="text/javascript" language="javascript" class="init">
+	
+	var arInvis = [4,6];
+	var arColShow = [3,5,7,8,9];
+	var arColShifted = [];
+	var colNum=3;
+	
+	// 1st shift
+	//transfer from show every that is behind
+	for (var i=colNum-1, h=arColShow.length; i<h; i++){
+		arTransfer(arColShow,arColShifted,arColShow[colNum-1]);
+	}
+	
+	// add from invis
+	// check if it destinated to arColShow (>[0]  < [arColShow.length-1])
+		// addOrdered(arColShow)
+		// arTransfer(arColShow,arColShifted,arColShow[arColShow.length-1]);
+	// then it destinated to arColShifted
+		// addOrdered(arColShifted)
+	
+	// add to invis
+	// check if it destinated to arColShow (>[0]  < [arColShow.length-1])
+		// check is enough showing cols
+		// find getNextOrdered(arColShifted,[arColShow.length-1]) 
+			//and transfer to arColShow - arTransfer(arColShifted,arColShow,elt);
+			//if not getPrevOrdered(arColShifted,[0]) 
+				//and transfer to arColShow - arTransfer(arColShifted,arColShow,elt);
+		// arTransfer(arColShow,arColShifted,arColShow[arColShow.length-1]);
+	// then check if it destinated to arColShifted
+		// addOrdered(arColShifted)
+	
+	if (!stepF()) console.log('finish');
+	if (!stepF()) console.log('finish');
+	if (!stepF()) console.log('finish');
+	if (!stepF()) console.log('finish');
+	if (!stepF()) console.log('finish');
+	if (!stepB()) console.log('start');
+	if (!stepB()) console.log('start');
+	if (!stepB()) console.log('start');
+	if (!stepB()) console.log('start');
+	if (!stepB()) console.log('start');
+	if (!stepB()) console.log('start');
+	if (!stepB()) console.log('start');
+	if (!stepB()) console.log('start');
+	
+	function stepF () {
+		// step forward 
+		// last visible column num
+		var el=arColShow[arColShow.length-1];
+		var elt= getNextOrdered(arColShifted,el);
+		// if there are place for step
+		if (elt!=undefined) {
+			el= arColShow.shift();
+			addOrdered (arColShifted, el);
+			return arTransfer(arColShifted,arColShow,elt);
+		}
+		else return false;
+	}
+
+	function stepB () {
+		// last visible column num
+		var el=arColShow[0];
+		var elt= getPrevOrdered(arColShifted,el);
+		// if there are place for step
+		if (elt!=undefined) {
+			el= arColShow.pop();
+			addOrdered (arColShifted, el);
+			return arTransfer(arColShifted,arColShow,elt);
+		}
+		else return false;
+	}
+	
+	// funct 
+	// transfer from one to another
+	function arTransfer (arS, arD, el) {
+		if (delOrdered(arS,el)){
+			addOrdered ( arD, el);
+			return true;
+		}
+		else return false;
+	}
+	// arD - sorted by asc
+	function addOrdered ( arD, el) {
+		var l=arD.length;
+		for (var i=0 ; i<arD.length; i++){
+			if (arD[i]>+el) {
+				arD.splice(i,0,+el);
+				break;
+			}
+			if (arD[i]==+el) { return false; }
+		}
+		if (l==arD.length) {
+			arD.push(+el);
+		}
+		return true;
+	}
+	// arD - sorted by asc
+	function delOrdered ( arD, el) {
+		var l=arD.length;
+		for (var i=0 ; i<arD.length; i++){
+			if (arD[i]==+el) {
+				arD.splice(i,1);
+				break;
+			}
+		}
+		if (l==arD.length) {
+			return false;
+		}
+		return true;
+	}
+	function getNextOrdered ( arD, el) {
+		for (var i=0 ; i<arD.length; i++){
+			if (arD[i]>+el) return arD[i];
+		}
+	}
+	
+	function getPrevOrdered ( arD, el) {
+		for (var i=arD.length-1 ; i>=0; i--){
+			if (arD[i]<+el) return arD[i];
+		}
+	}
+	
+ ;
+
+
+	</script>
+</head>
+<body>
+<div>Toggle column: <a class="toggle-vis" data-column="0">Name</a> - 
+<a class="toggle-vis" data-column="1">Position</a> - 
+<a class="toggle-vis" data-column="2">Office</a> - 
+<a class="toggle-vis" data-column="3">Age</a> - 
+<a class="toggle-vis" data-column="4">Start date</a> - 
+<a class="toggle-vis" data-column="5">Salary</a>
+</div>
+<div>Steps: 
+<a class="back" data-column="1">back</a> -
+<a class="fvd"  data-column="0">forward</a> 
+</div>
+ff
+<div style="width: 800px">
+<table id="example" class="display" cellspacing="0">
+</table>
+</div>
+ffff
+</body>
